@@ -63,20 +63,18 @@
 		todos = todos.concat(todo);
 	}
 
-	function convertDate(formattedSelected){
-		var date_ss = formattedSelected;
-		var splitted = date_ss.split("/")
-		var newDate = new Date();
-		newDate.setDate(splitted[0]);
-		newDate.setMonth(splitted[1]);
-		newDate.setYear(splitted[2]);
-		{console.log(newDate), ''}
-		return newDate;
-	}
+	//  Testing a function
+	//  function convertDate(formattedSelected){
+	// 	var date_ss = formattedSelected;
+	// 	var splitted = date_ss.split("/")
+	// 	var newDate = new Date();
+	// 	newDate.setDate(splitted[0]);
+	// 	newDate.setMonth(splitted[1]);
+	// 	newDate.setYear(splitted[2]);
+	// 	{console.log(newDate), ''}
+	// 	return newDate;
+	// }
 	// alert(typeof {formattedSelected});
-	
-	
-	
 </script>
 <main>
 <h1>Daily To-Do</h1>
@@ -117,13 +115,12 @@
 	{/each}
 	</div>
 </div>
-<Datepicker 
-
-class='dp' 
-bind:formattedSelected/>
+<Datepicker bind:formattedSelected/>
 
 
-
+<div class='dp'>
+	{formattedSelected}
+</div>
 
 
 
