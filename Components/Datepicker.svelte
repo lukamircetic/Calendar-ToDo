@@ -46,11 +46,11 @@
   export let buttonBackgroundColor = '#fff';
   export let buttonBorderColor = '#eee';
   export let buttonTextColor = '#333';
-  export let highlightColor = '#f7901e';
-  export let dayBackgroundColor = 'none';
-  export let dayTextColor = '#4a4a4a';
+  export let highlightColor = '#9B1D20';
+  export let dayBackgroundColor = '#586994'; //6D6A75
+  export let dayTextColor = '#fff';
   export let dayHighlightedBackgroundColor = '#efefef';
-  export let dayHighlightedTextColor = '#4a4a4a';
+  export let dayHighlightedTextColor = '#37323e';
   internationalize({ daysOfWeek, monthsOfYear });
   let sortedDaysOfWeek = weekStart === 0 ? daysOfWeek : (() => {
     let dow = daysOfWeek.slice();
@@ -283,8 +283,10 @@
     text-align: center;
     overflow: visible;
     position: absolute;
-    right: 10%;
-    top: 30%;
+    top: 555px;
+    left: 50%;
+    margin-left: 150px;
+    font-family: 'Manrope';
     
   }
   .calendar-button {

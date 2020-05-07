@@ -33,5 +33,6 @@
     display: grid;
     -ms-grid-columns: 1fr;
     -ms-grid-rows: 1fr;
+    font-family: 'Manrope';
   }
 </style>

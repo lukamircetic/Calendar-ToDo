@@ -51,6 +51,7 @@
     justify-content: space-around;
     -ms-grid-column: 1;
     grid-column: 1; 
+    font-family: 'Manrope';
   }
   .week:nth-child(6n + 1) { 
     -ms-grid-row: 1; 

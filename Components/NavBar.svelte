@@ -37,7 +37,7 @@
     toggleMonthSelectorOpen();
   }
 </script>
-
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet"> 
 <div class="title">
   <div class="heading-section">
     <div class="control" 
@@ -69,13 +69,15 @@
 </div>
 
 <style>
+
   .heading-section { 
-    font-size: 20px;
+    font-size: 25px;
     padding: 24px 15px;
     display: flex;
     justify-content: space-between;
     color: #3d4548;
-    font-weight: bold;
+    font-weight: 100;
+    font-family: 'Manrope';
   }
   .label { 
     cursor: pointer;
@@ -93,6 +95,7 @@
     visibility: hidden;
     z-index: 1;
     text-align: center;
+    font-family: 'Manrope';
   }
   .month-selector.open { 
     transform: scale(1); 

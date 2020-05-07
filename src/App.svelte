@@ -63,93 +63,107 @@
 		todos = todos.concat(todo);
 	}
 
-	//  Testing a function
-	//  function convertDate(formattedSelected){
-	// 	var date_ss = formattedSelected;
-	// 	var splitted = date_ss.split("/")
-	// 	var newDate = new Date();
-	// 	newDate.setDate(splitted[0]);
-	// 	newDate.setMonth(splitted[1]);
-	// 	newDate.setYear(splitted[2]);
-	// 	{console.log(newDate), ''}
-	// 	return newDate;
-	// }
-	// alert(typeof {formattedSelected});
 </script>
-<main>
-<h1>Daily To-Do</h1>
-</main>
-<div class='board'>
-	<input
-		placeholder='what needs to be done this day?'
-		on:keydown={e => e.key === 'Enter' && add(e.target)}
-	>
-
-	<div class='left'>
-		<h2>todo</h2>
-		{#each todos.filter(t => !t.done && formattedSelected == t.date_id) as todo (todo.id)}
-			<label
-				in:receive="{{key: todo.id}}"
-				out:send="{{key: todo.id}}"
-				animate:flip="{{duration: 200}}"
+<body>
+	<main>
+	<h1>To-Do Calendar</h1>
+	</main>
+	<div class='box'>
+		<div class='board'>
+			<input
+				placeholder='What needs to be done this day?'
+				on:keydown={e => e.key === 'Enter' && add(e.target)}
 			>
-				<input type=checkbox on:change={() => mark(todo, true)}>
-				{todo.description}
-				<button on:click="{() => remove(todo)}">remove</button>
-			</label>
-		{/each}
+			<div class='left'>
+				<h2>todo</h2>
+				{#each todos.filter(t => !t.done && formattedSelected == t.date_id) as todo (todo.id)}
+					<label
+						in:receive="{{key: todo.id}}"
+						out:send="{{key: todo.id}}"
+						animate:flip="{{duration: 200}}"
+					>
+						<input type=checkbox on:change={() => mark(todo, true)}>
+						{todo.description}
+						<button on:click="{() => remove(todo)}">remove</button>
+					</label>
+				{/each}
+			</div>
+			<div class='right'>
+			<h2>done</h2>
+			{#each todos.filter(t => t.done && formattedSelected == t.date_id) as todo (todo.id)}
+				<label
+					class='done'
+					in:receive="{{key: todo.id}}"
+					out:send="{{key: todo.id}}"
+					animate:flip="{{duration: 200}}"
+				>
+					<input type=checkbox checked={true} on:change={() => mark(todo, false)}>
+					{todo.description}
+					<button on:click={()=> remove(todo)}>remove</button>
+				</label>
+			{/each}
+			</div>
+		</div>
+		<Datepicker bind:formattedSelected class='calendar'/>
 	</div>
-	<div class='right'>
-	<h2>done</h2>
-	{#each todos.filter(t => t.done && formattedSelected == t.date_id) as todo (todo.id)}
-		<label
-			class='done'
-			in:receive="{{key: todo.id}}"
-			out:send="{{key: todo.id}}"
-			animate:flip="{{duration: 200}}"
-		>
-			<input type=checkbox checked={true} on:change={() => mark(todo, false)}>
-			{todo.description}
-			<button on:click={()=> remove(todo)}>remove</button>
-		</label>
-	{/each}
+	<div class='dp'>
+		{formattedSelected}
 	</div>
-</div>
-<Datepicker bind:formattedSelected/>
-
-
-<div class='dp'>
-	{formattedSelected}
-</div>
-
+</body>
 
 
 <style>
+	:root{
+		--bg-col: #6D6A75;
+		--hl-col: #9B1D20;
+		--text-col: #fff;
+		--accent-col: #bfbdc1;
+		--sec-col: #586994;
+	}
+
+	body{
+		background-color: var(--accent-col);
+		border: none;
+		width: 101%;
+		height: 101%;
+		position: absolute;
+		margin-left: -25px;
+		margin-top: -10px;
+	
+		padding: 0;
+	}
 	main {
 		text-align: center;
 		padding: 1em;
-		max-width: 240px;
+		max-width: 100%;
 		margin: 0 auto;
+		line-height: 50%;
 	}
 	h1 {
-		color: #ff3e00;
+		color: var(--sec-col);
 		text-transform: uppercase;
-		font-size: 2em;
-		font-weight: 100;
+		font-size: 100px;
+		font-weight: 200;
+		font-family: 'Manrope';
 	}
 	.board {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		grid-gap: 1em;
-		max-width: 16em;
+		max-width: 45em;
+		max-height: 50%;
 		margin: 0 auto;
 		position: absolute;
-		top: 15%;
-		left: 5%;
-		overflow-wrap: break-word;
+		top: 300px;
+		left: 50%;
+		margin-left: -600px;
+
+		overflow-y: auto;
+		overflow-x: hidden
 	}
 
 	.board > input {
+		font-family: 'Manrope';
 		font-size: 1.1em;
 		grid-column: 1/3;
 		border-radius: 5px;
@@ -160,6 +174,8 @@
 		font-weight: 200;
 		user-select: none;
 		margin-right: 210px;
+		font-family: 'Manrope';
+		color: var(--sec-col)
 	}
 	label {
 		position: relative;
@@ -174,6 +190,7 @@
 		min-width: 200px;
 		max-width: 200px;
 		overflow-wrap: break-word;
+		font-family: 'Manrope';
 	}
 
 	input[type="checkbox"] {
@@ -181,6 +198,7 @@
 		left: 0.5em;
 		top: 0.6em;
 		margin: 0;
+		background-color: var(--accent-col);
 	}
 
 	.done {
@@ -207,8 +225,13 @@
 		opacity: 1;
 	}
 	.dp{
+		font-family: 'Manrope';
+		font-weight: 600;
+		font-size: 70px;
 		position: absolute;
-		top:10%;
-		left: 300px;
+		top: 180px;
+		left: 50%;
+		margin-left: -600px;
+		color: var(--sec-col);
 	}
 </style>
