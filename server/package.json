@@ -3,11 +3,20 @@
   "version": "1.0.0",
   "description": "calendar task app",
   "main": "index.js",
-  "scripts": {
-    "test": "test"
-  },
   "author": "Luka Mircetic",
   "license": "ISC",
+  "scripts": {
+    "build": "babel src --out-dir dist",
+    "test": "cross-env NODE_ENV=testing jest --forceExit --detectOpenHandles  --silent",
+    "test-routes": "yarn test -t router",
+    "test-models": "yarn test -t model",
+    "test-controllers": "yarn test -t controllers",
+    "test-auth": "yarn test -t Authentication:",
+    "dev": "nodemon --exec yarn restart",
+    "restart": "rimraf dist && yarn build && yarn start",
+    "start": "node dist/index.js"
+  },
+
   "dependencies": {
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
