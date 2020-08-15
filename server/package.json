@@ -16,15 +16,15 @@
     "restart": "rimraf dist && yarn build && yarn start",
     "start": "node dist/index.js"
   },
-
   "dependencies": {
     "bcrypt": "^3.0.2",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.2",
     "cuid": "^2.1.4",
     "dotenv": "^6.1.0",
     "express": "^4.16.4",
-    "jsonwebtoken": "^8.4.0",
+    "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.11",
     "mongoose": "^5.3.13",
     "morgan": "^1.9.1",
