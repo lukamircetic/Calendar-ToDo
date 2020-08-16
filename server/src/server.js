@@ -4,6 +4,7 @@ import morgan from 'morgan'
 import config from './config'
 import cors from 'cors'
 import { connect } from './utils/db'
+import indexRouter from './views/landing'
 import itemRouter from './resources/item/item.router'
 import userRouter from './resources/user/user.router'
 import listRouter from './resources/list/list.router'
@@ -15,12 +16,12 @@ app.use(cors())
 app.use(json())
 app.use(urlencoded({ extended: true }))
 app.use(morgan('dev'))
-
+app.use('/', indexRouter)
 app.post('/signup', signup)
 app.post('/signin', signin)
 
 app.use('/api', protect)
-app.user('api/user', userRouter)
+app.use('/api/user', userRouter)
 app.use('/api/item', itemRouter)
 app.use('/api/list', listRouter)
 
@@ -28,7 +29,7 @@ export const start = async () => {
   try {
     await connect()
     app.listen(config.port, () => {
-      console.log(`REST API on http://localhost:${config.port}/api`)
+      console.log(`REST API on http://localhost:${config.port}/`)
     })
   } catch (e) {
     console.error(e)
