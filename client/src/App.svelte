@@ -8,18 +8,18 @@
   let errorMessage;
   let errorShow;
 
-  onMount(async() => {
-    const res = await fetch(
-      "/checkLogin"
-    );
-    const response = await res.json();
-    if (response.logged_in){
-      loggedIn = true;
-    }
-    else{
-      loggedIn = false;
-    }
-  })
+  // onMount(async() => {
+  //   const res = await fetch(
+  //     "/checkLogin"
+  //   );
+  //   const response = await res.json();
+  //   if (response.logged_in){
+  //     loggedIn = true;
+  //   }
+  //   else{
+  //     loggedIn = false;
+  //   }
+  // })
   // async function logoutUser() {
   //   loggedIn = false;
   //   const res = await fetch(`/logout`);
