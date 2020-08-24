@@ -44,6 +44,7 @@ export const createOne = model => async (req, res) => {
 
 export const updateOne = model => async (req, res) => {
   try {
+    console.log('here are the incoming params', req.params)
     const updatedDoc = await model
       .findOneAndUpdate(
         {

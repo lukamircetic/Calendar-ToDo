@@ -5,21 +5,28 @@
   import { flip } from 'svelte/animate'
   import Datepicker from '../Components/Datepicker.svelte'
   import { formatDate } from 'timeUtils'
-  import { fetchPost, fetchGet } from './helpers.js'
+  import { fetchPost, fetchGet, fetchDelete, fetchUpdate } from './helpers.js'
   import { current_user_id } from './states.js'
   let formattedSelected
   let selected
   let lists = {}
   let mounted = false
-  let uid = 1
   let todos = []
+  let currentList
 
+  //todos: store the incoming items, sort by list, and display -- done
+  // remove items, mark as complete, etc --- done
+
+  //TODO - need to figure out how to not post an empty list
   //on mount I get all the user's lists from the db and assign them to lists param
   onMount(async () => {
     const response = await fetchGet('api/list')
     console.log('list response', response)
     lists = { ...response.data }
     mounted = true
+    const items = await fetchGet('api/item')
+    todos = items.data
+    console.log('alltodos;', todos)
   })
 
   //Todo list styles... basically taken from the svelte tutorial
@@ -46,6 +53,7 @@
     let exists = false
     for (const [key, value] of Object.entries(lists)) {
       if (value.name === `${formattedSelected}`) {
+        currentList = value
         exists = true
         break
       }
@@ -68,17 +76,47 @@
     let list = response.data
     lists = { ...lists, list }
   }
+  // Add an item to db
+  async function addItem(item) {
+    const response = await fetchPost('/api/item', {
+      name: item.name,
+      status: item.status,
+      due: item.date,
+      list: item.list._id
+    })
+    if (!response) {
+      console.log("Couldn't add item")
+    }
+    let addedItem = response.data
+    todos = [...todos, addedItem]
+    console.log('allTodos with new item', todos)
+  }
 
+  async function removeItem(todo) {
+    const response = await fetchDelete(`/api/item/${todo._id}`)
+    if (!response) {
+      console.log('Could not delete item')
+    }
+    todos = todos.filter(t => t !== todo)
+  }
 
+  async function updateItem(todo) {
+    const response = await fetchUpdate(`/api/item/${todo._id}`, {
+      status: todo.status,
+    })
+    if(!response){
+      console.log('Could not update item')
+    }
+  }
+  // add an item to a list (date)
   function add(input) {
     const todo = {
-      id: uid++,
-      date_id: formattedSelected,
-      done: false,
-      description: input.value
+      name: input.value,
+      status: 'active',
+      due: new Date(formattedSelected),
+      list: currentList
     }
-
-    todos = [todo, ...todos]
+    addItem(todo)
     input.value = ''
   }
 
@@ -87,7 +125,8 @@
   }
 
   function mark(todo, done) {
-    todo.done = done
+    todo.status = done
+    updateItem(todo)
     remove(todo)
     todos = todos.concat(todo)
   }
@@ -229,31 +268,31 @@
         on:keydown={e => e.key === 'Enter' && add(e.target)} />
       <div class="left">
         <h2>todo</h2>
-        {#each todos.filter(t => !t.done && formattedSelected == t.date_id) as todo (todo.id)}
+        {#each todos.filter(t => t.status === 'active' && currentList._id === t.list) as todo (todo._id)}
           <label
-            in:receive={{ key: todo.id }}
-            out:send={{ key: todo.id }}
+            in:receive={{ key: todo._id }}
+            out:send={{ key: todo._id }}
             animate:flip={{ duration: 200 }}>
-            <input type="checkbox" on:change={() => mark(todo, true)} />
-            {todo.description}
-            <button on:click={() => remove(todo)}>remove</button>
+            <input type="checkbox" on:change={() => mark(todo, 'complete')} />
+            {todo.name}
+            <button on:click={() => removeItem(todo)}>remove</button>
           </label>
         {/each}
       </div>
       <div class="right">
         <h2>done</h2>
-        {#each todos.filter(t => t.done && formattedSelected == t.date_id) as todo (todo.id)}
+        {#each todos.filter(t => t.status == 'complete' && currentList._id == t.list) as todo (todo._id)}
           <label
             class="done"
-            in:receive={{ key: todo.id }}
-            out:send={{ key: todo.id }}
+            in:receive={{ key: todo._id }}
+            out:send={{ key: todo._id }}
             animate:flip={{ duration: 200 }}>
             <input
               type="checkbox"
               checked={true}
-              on:change={() => mark(todo, false)} />
-            {todo.description}
-            <button on:click={() => remove(todo)}>remove</button>
+              on:change={() => mark(todo, 'active')} />
+            {todo.name}
+            <button on:click={() => removeItem(todo)}>remove</button>
           </label>
         {/each}
       </div>

@@ -33,3 +33,32 @@ export async function fetchGet(url) {
   const response = await res.json()
   return response
 }
+
+export async function fetchDelete(url){
+  const res = await fetch(url, {
+    method: 'DELETE', 
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    user: { _id: current_user_id },
+  })
+  const response = await res.json()
+  return response
+}
+
+export async function fetchUpdate(url, data) {
+  const res = await fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      authorization: `Bearer ${token}`,
+    },
+    user: { _id: current_user_id },
+    body: JSON.stringify(data)
+  })
+  const response = await res.json()
+  return response
+}
