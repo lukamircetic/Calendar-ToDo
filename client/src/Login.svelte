@@ -2,7 +2,7 @@
   import Login from './Login.svelte'
   import { fetchPost } from './helpers.js'
   import { createEventDispatcher } from 'svelte'
-  import { current_user_id, user_token } from "./states";
+  import { current_user_id, user_token } from './states'
   const dispatch = createEventDispatcher()
 
   export let loggedIn
@@ -12,7 +12,7 @@
   let email = ''
   let password = ''
   let confirmPass = ''
-
+  let title = 'Sign in'
   function handleGuest() {
     dispatch('login-guest', { success: true })
   }
@@ -53,9 +53,16 @@
   }
 
   function handleLogin() {
+    email = ''
+    password = ''
+    confirmPass = ''
     if (login == true) {
+      title = 'Create Account'
       login = false
-    } else login = true
+    } else {
+      title = 'Sign in'
+      login = true
+    }
   }
 
   function handleSuccess() {
@@ -65,42 +72,300 @@
   }
 </script>
 
-<body>
-  <main>
-    <h1>To-Do Calendar</h1>
-  </main>
-  <form>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&display=swap');
+  .title-box {
+    width: 480px;
+    padding: 32px;
+    background-color: #3a3a41;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    /* text-transform: uppercase */
+  }
+  .center-box {
+    width: 100%;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    font-weight: inherit;
+    font-family: inherit;
+    font-style: inherit;
+    font-size: 100%;
+  }
 
-    <h2>Username</h2>
-    <input
-      class="longer"
-      type="email"
-      placeholder="Enter your email"
-      on:input={event => (email = event.target.value)}
-      value={email} />
-    <h2>Password</h2>
-    <input
-      class="longer"
-      type="password"
-      placeholder="Enter your password"
-      on:input={event => (password = event.target.value)}
-      value={password} />
-    {#if !login}
-      <h2>Confirm Password</h2>
-      <input
-        class="longer"
-        type="password"
-        placeholder="Confirm your password"
-        on:input={event => (confirmPass = event.target.value)}
-        value={confirmPass} />
-    {/if}
-  </form>
-  {#if login}
-    <button type="submit" on:click={loginUser}>Sign in</button>
-    <button on:click={handleLogin}>Don't have an account yet?</button>
-  {:else}
-    <button type="submit" on:click={signUpUser}>Create account</button>
-    <button on:click={handleLogin}>Already have an account? Sign in</button>
-  {/if}
-  <button on:click={handleGuest}>Use as Guest</button>
+  .flex-center {
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 auto;
+    outline: 0;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .main-box {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
+  }
+  .login-title {
+    font-size: 28px;
+    color: #fff;
+    font-weight: 600;
+    line-height: 30px;
+    margin-bottom: 8px;
+  }
+
+  .secondary-title {
+    color: #fff;
+    font-size: 15px;
+    line-height: 20px;
+  }
+
+  .form-box {
+    width: 100%;
+    text-align: left;
+    margin-top: 20px;
+  }
+
+  .login-box {
+    width: 100%;
+    text-align: left;
+  }
+  .email-box {
+    margin-bottom: 20px;
+  }
+
+  .email-title {
+    color: #fff;
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 0;
+  }
+
+  .input-box {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .email-input {
+    padding: 10px;
+    height: 40px;
+    font-size: 16px;
+    box-sizing: border-box;
+    width: 100%;
+    border-radius: 3px;
+    color: #fff;
+    background-color: #313036;
+    border: 1px solid #1c1b1f;
+    transition: border-color 0.2s ease-in-out;
+  }
+
+  .email-input:focus {
+    border-color: #7b88a3;
+  }
+
+  .email-input::placeholder {
+    color: #7b88a3;
+  }
+
+  .register {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .login-button {
+    color: #fff;
+    background-color: #7b88a3;
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 8px;
+    width: 100%;
+    height: 44px;
+    min-width: 130px;
+    min-height: 44px;
+    border: none;
+    border-radius: 3px;
+    transition: background-color 0.2s ease;
+  }
+
+  .login-button:hover {
+    background-color: #6c778f;
+  }
+
+  .login-title {
+    margin: 0, auto;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .secondary-button {
+    color: #7b88a3;
+    display: inline-block;
+    margin-left: 10px;
+    margin-bottom: 0;
+    vertical-align: bottom;
+    padding: 0;
+    width: auto;
+    height: auto;
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    user-select: none;
+    cursor: pointer;
+  }
+
+  .secondary-button:hover {
+    text-decoration: underline;
+  }
+
+  /* When demo is working use this */
+  /* .secondary-button-demo {
+    color: #7b88a3;
+    display: inline-block;
+    margin-left: 10px;
+    margin-bottom: 0;
+    vertical-align: bottom;
+    padding: 0;
+    width: auto;
+    height: auto;
+    background: none;
+    border: none;
+    font-size: 16px;
+    font-weight: 500;
+    user-select: none;
+    cursor: pointer;
+  }
+
+  .secondary-button-demo:hover {
+    text-decoration: underline;
+  } */
+
+  body {
+    font-family: 'Catamaran', sans-serif;
+    background-color: #313036;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .page-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 580px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<svelte:head>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet" />
+</svelte:head>
+<body>
+  <div class="page-wrapper">
+    <div class="title-box">
+      <div class="center-box">
+        <div class="flex-center">
+          <div class="main-box">
+            <div class="login-title">{title}</div>
+            <!-- <div class="secondary-title">Sign in to view your to-do's!</div> -->
+            <form class="form-box">
+              <div class="email-box">
+                <h5 class="email-title">Email</h5>
+                <div class="input-box">
+                  <input
+                    id="username"
+                    class="email-input"
+                    type="email"
+                    placeholder="Enter your email"
+                    on:input={event => (email = event.target.value)}
+                    value={email} />
+                </div>
+              </div>
+              <div class="email-box">
+                <h5 class="email-title">Password</h5>
+                <div class="input-box">
+                  <input
+                    id="password"
+                    class="email-input"
+                    type="password"
+                    placeholder="Enter your password"
+                    on:input={event => (password = event.target.value)}
+                    value={password} />
+                </div>
+              </div>
+              {#if !login}
+                <div class="email-box">
+                  <h5 class="email-title">Confirm Password</h5>
+                  <div class="input-box">
+                    <input
+                      id="confirm"
+                      class="email-input"
+                      type="password"
+                      placeholder="Confirm your password"
+                      on:input={event => (confirmPass = event.target.value)}
+                      value={confirmPass} />
+                  </div>
+                </div>
+              {/if}
+            </form>
+            <div class="login-box">
+              {#if login}
+                <div>
+                  <button
+                    type="submit"
+                    class="login-button"
+                    on:click={loginUser}>
+                    <div class="button-title">Log in</div>
+                  </button>
+                </div>
+                <div class="register">
+                  <span class="secondary-title">Don't have an account?</span>
+                  <button class="secondary-button" on:click={handleLogin}>
+                    <div class="button-title">Sign Up</div>
+                  </button>
+                  <!-- Need to add a demo route later on so people can test it out -->
+                  <!-- <button class="secondary-button-demo" on:click={handleLogin}>
+                  <div </div>class="button-title">Demo</div>
+                </button> -->
+                </div>
+              {:else}
+                <button
+                  type="submit"
+                  class="login-button"
+                  on:click={signUpUser}>
+                  <div class="button-title">Create account</div>
+                </button>
+                <div class="register">
+                  <span class="secondary-title">Already have an account?</span>
+                  <button class="secondary-button" on:click={handleLogin}>
+                    <div class="button-title">Sign In</div>
+                  </button>
+                </div>
+              {/if}
+            </div>
+          </div>
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
