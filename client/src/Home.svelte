@@ -6,14 +6,31 @@
   import Datepicker from '../Components/Datepicker.svelte'
   import { formatDate } from 'timeUtils'
   import { fetchPost, fetchGet, fetchDelete, fetchUpdate } from './helpers.js'
-  import { current_user_id } from './states.js'
+  import { current_user_id, user_name } from './states.js'
   let formattedSelected
   let selected
   let lists = {}
   let mounted = false
   let todos = []
   let currentList
+  let currentStatement = ''
 
+  // For the personal time statement at the top - in the future could change so when the user signs up that they input a name
+  // but atm this is fine imo
+  const timeStatement = () => {
+    let d = new Date()
+    let h = d.getHours()
+    if (0 < h && h < 12) {
+      console.log(h)
+      currentStatement = `Good morning, ${$user_name}`
+    } else if (12 <= h && h < 18) {
+      currentStatement = `Good afternoon, ${$user_name}`
+    } else if (h >= 18) {
+      currentStatement = `Good evening, ${$user_name}`
+    }
+  }
+
+  timeStatement()
   //todos: store the incoming items, sort by list, and display -- done
   // remove items, mark as complete, etc --- done
 
@@ -102,9 +119,9 @@
 
   async function updateItem(todo) {
     const response = await fetchUpdate(`/api/item/${todo._id}`, {
-      status: todo.status,
+      status: todo.status
     })
-    if(!response){
+    if (!response) {
       console.log('Could not update item')
     }
   }
@@ -134,56 +151,120 @@
 
 <style>
   :root {
-    --bg-col: #6d6a75;
-    --hl-col: #9b1d20;
-    --text-col: #fff;
-    --accent-col: #bfbdc1;
-    --sec-col: #586994;
+    --prim-col: #464d77;
+    --sec-col: #36827f;
+    --tri-col: #f7d455;
+    --tri-hover: #fcda61;
+    --bg-col: #3a3a41;
+    --bgg-col: #313036;
+    --bggg-col: #2f2f33;
+    --bg-hover: #42424b;
+    --low-col: #7b88a3;
   }
 
   body {
-    background-color: var(--accent-col);
-    border: none;
-    width: 101%;
-    height: 101%;
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bggg-col);
     position: absolute;
-    margin-left: -25px;
-    margin-top: -10px;
+    top: 0;
+    left: 0;
+  }
 
-    padding: 0;
+  .page-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 580px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
   }
-  main {
-    text-align: center;
-    padding: 1em;
-    max-width: 100%;
-    margin: 0 auto;
-    line-height: 50%;
+
+  .main-title {
+    font-family: 'Montserrat', sans-serif;
+    color: var(--tri-col);
+    font-size: 60px;
+    font-weight: 800;
+    margin-top: 50px;
+    margin-bottom: 35px;
   }
-  h1 {
-    color: var(--sec-col);
-    text-transform: uppercase;
-    font-size: 100px;
-    font-weight: 200;
-    font-family: 'Manrope';
+
+  @media (min-width: 1200px) {
+    .date-wrapper {
+      margin-top: 100px;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    .todo-wrapper {
+      width: 600px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .date-title {
+      margin-right: 50px;
+      width: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
   }
+  @media (max-width: 1200px) {
+    .date-title {
+      margin-right: 50px;
+      width: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .date-wrapper {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .date-title {
+      margin-right: 50px;
+      width: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .todo-wrapper {
+      width: 600px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+  .dp {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 75px;
+    color: var(--tri-col);
+    margin-bottom: 35px;
+  }
+
   .board {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 1em;
     max-width: 45em;
-    max-height: 50%;
-    margin: 0 auto;
-    position: absolute;
-    top: 300px;
-    left: 50%;
-    margin-left: -600px;
-
+    max-height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
   }
 
   .board > input {
-    font-family: 'Manrope';
+    font-family: 'Roboto', sans-serif;
     font-size: 1.1em;
     grid-column: 1/3;
     border-radius: 5px;
@@ -194,8 +275,8 @@
     font-weight: 200;
     user-select: none;
     margin-right: 210px;
-    font-family: 'Manrope';
-    color: var(--sec-col);
+    font-family: 'Roboto', sans-serif;
+    color: var(--tri-col);
   }
   label {
     position: relative;
@@ -210,7 +291,7 @@
     min-width: 200px;
     max-width: 200px;
     overflow-wrap: break-word;
-    font-family: 'Manrope';
+    font-family: 'Roboto', sans-serif;
   }
 
   input[type='checkbox'] {
@@ -245,59 +326,73 @@
   label:hover button {
     opacity: 1;
   }
-  .dp {
-    font-family: 'Manrope';
-    font-weight: 600;
-    font-size: 70px;
-    position: absolute;
-    top: 180px;
-    left: 50%;
-    margin-left: -600px;
-    color: var(--sec-col);
+  .datepicker {
+    width: 540px;
+    height: 585px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 </style>
 
+<link
+  href="https://fonts.googleapis.com/css2?family=Catamaran:wght@100;200;300;400;500;600;700;800;900&display=swap"
+  rel="stylesheet" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+  rel="stylesheet" />
+<link
+  href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+  rel="stylesheet" />
 <body>
-  <main>
-    <h1>To-Do Calendar</h1>
-  </main>
-  <div class="box">
-    <div class="board">
-      <input
-        placeholder="What needs to be done this day?"
-        on:keydown={e => e.key === 'Enter' && add(e.target)} />
-      <div class="left">
-        <h2>todo</h2>
-        {#each todos.filter(t => t.status === 'active' && currentList._id === t.list) as todo (todo._id)}
-          <label
-            in:receive={{ key: todo._id }}
-            out:send={{ key: todo._id }}
-            animate:flip={{ duration: 200 }}>
-            <input type="checkbox" on:change={() => mark(todo, 'complete')} />
-            {todo.name}
-            <button on:click={() => removeItem(todo)}>remove</button>
-          </label>
-        {/each}
+  <div class="page-wrapper">
+    <div class="main-title">{currentStatement}</div>
+    <div class="date-wrapper">
+      <div class="date-title">
+        <div class="dp">{formattedSelected}</div>
+        <div class="board">
+          <input
+            placeholder="What needs to be done this day?"
+            on:keydown={e => e.key === 'Enter' && add(e.target)} />
+          <div class="todo-wrapper">
+            <div class="left">
+              <h2>todo</h2>
+              {#each todos.filter(t => t.status === 'active' && currentList._id === t.list) as todo (todo._id)}
+                <label
+                  in:receive={{ key: todo._id }}
+                  out:send={{ key: todo._id }}
+                  animate:flip={{ duration: 200 }}>
+                  <input
+                    type="checkbox"
+                    on:change={() => mark(todo, 'complete')} />
+                  {todo.name}
+                  <button on:click={() => removeItem(todo)}>remove</button>
+                </label>
+              {/each}
+            </div>
+            <div class="right">
+              <h2>done</h2>
+              {#each todos.filter(t => t.status == 'complete' && currentList._id == t.list) as todo (todo._id)}
+                <label
+                  class="done"
+                  in:receive={{ key: todo._id }}
+                  out:send={{ key: todo._id }}
+                  animate:flip={{ duration: 200 }}>
+                  <input
+                    type="checkbox"
+                    checked={true}
+                    on:change={() => mark(todo, 'active')} />
+                  {todo.name}
+                  <button on:click={() => removeItem(todo)}>remove</button>
+                </label>
+              {/each}
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="right">
-        <h2>done</h2>
-        {#each todos.filter(t => t.status == 'complete' && currentList._id == t.list) as todo (todo._id)}
-          <label
-            class="done"
-            in:receive={{ key: todo._id }}
-            out:send={{ key: todo._id }}
-            animate:flip={{ duration: 200 }}>
-            <input
-              type="checkbox"
-              checked={true}
-              on:change={() => mark(todo, 'active')} />
-            {todo.name}
-            <button on:click={() => removeItem(todo)}>remove</button>
-          </label>
-        {/each}
+      <div class="datepicker">
+        <Datepicker bind:formattedSelected class="calendar" />
       </div>
     </div>
-    <Datepicker bind:formattedSelected class="calendar" />
   </div>
-  <div class="dp">{formattedSelected}</div>
 </body>

@@ -282,10 +282,10 @@
     margin: 0 auto;
     text-align: center;
     overflow: visible;
-    position: absolute;
+    /* position: absolute;
     top: 555px;
     left: 50%;
-    margin-left: 150px;
+    margin-left: 150px; */
     font-family: 'Manrope';
     
   }
@@ -316,10 +316,17 @@
     padding: 10px;
     padding-top: 0;
   }
-  @media (min-width: 480px) {
+  @media (min-width: 450px) {
     .calendar {
       height: auto;
       width: 540px;
+      max-width: 100%;
+    }
+  }
+  @media (max-width: 1200px) {
+    .calendar {
+      height: auto;
+      width: 400px;
       max-width: 100%;
     }
   }

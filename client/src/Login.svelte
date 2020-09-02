@@ -2,7 +2,7 @@
   import Login from './Login.svelte'
   import { fetchPost } from './helpers.js'
   import { createEventDispatcher } from 'svelte'
-  import { current_user_id, user_token } from './states'
+  import { current_user_id, user_token, user_name } from './states'
   const dispatch = createEventDispatcher()
 
   export let loggedIn
@@ -37,6 +37,7 @@
     }
     current_user_id.set(response.id)
     user_token.set(response.token)
+    user_name.set(email.split("@")[0]);
     // console.log($current_user_id, $user_token)
     dispatch('login-user', { success: response.success })
   }
@@ -438,6 +439,12 @@
     background-color: var(--bg-hover);
   }
   
+  .box {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 </style>
 
 <svelte:head>
