@@ -28,6 +28,8 @@
         class:highlighted={areDatesEquivalent(day.date, highlighted)}
         class:shake-date={shouldShakeDate && areDatesEquivalent(day.date, shouldShakeDate)}
         class:disabled={!day.selectable}
+        class:is-first={!(day.date.getDate() !== 1)}
+        class:today={day.isToday}
         type="button"
         on:click={() => dispatch('dateSelected', day.date)}
       >
@@ -140,7 +142,23 @@
     opacity: 1; 
     background: none;
     border-color: var(--highlight-color);
-    color: #000;
+    color: #f7d455;
+  }
+  .day--label.selected.today {
+    background-color: var(--highlight-color);
+    border-color: var(--highlight-color);
+    color: #fff;
+  }
+  .day--label.is-first.selected.highlighted { 
+    background-color: var(--highlight-color);
+    border-color: var(--low-col);
+    color: #fff;
+  }
+
+  .day--label.is-first.highlighted { 
+    background: none;
+    border-color: var(--low-col);
+    color: #fff;
   }
   @keyframes shake {
     0% { transform: translate(7px); }

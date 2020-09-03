@@ -166,6 +166,7 @@
     font-family: 'Roboto', sans-serif;
     background-color: var(--bggg-col);
     position: absolute;
+    overflow: auto;
     top: 0;
     left: 0;
   }
@@ -265,18 +266,23 @@
 
   .board > input {
     font-family: 'Roboto', sans-serif;
+    max-width: 600px;
     font-size: 1.1em;
     grid-column: 1/3;
     border-radius: 5px;
+    background-color: var(--bgg-col);
+    color: white;
+    border: 1px solid var(--tri-col);
+  }
+  .board > input::placeholder {
+    color: var(--low-col);
+  }
+  .left {
+    width: 50%;
   }
 
-  h2 {
-    font-size: 2em;
-    font-weight: 200;
-    user-select: none;
-    margin-right: 210px;
-    font-family: 'Roboto', sans-serif;
-    color: var(--tri-col);
+  .right {
+    width: 50%;
   }
   label {
     position: relative;
@@ -333,6 +339,107 @@
     justify-content: center;
     align-items: center;
   }
+
+  .todo-title {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 25px;
+    user-select: none;
+    color: var(--tri-col);
+  }
+
+  /* Styles for items */
+  .not-done {
+    margin: 10px 0;
+    width: 300px;
+    color: white;
+    /* text-transform: uppercase; */
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    overflow: auto;
+    line-height: 20px;
+    font-weight: 400;
+    background-color: var(--bgg-col);
+    border-radius: 3px;
+    border: 1px solid var(--tri-col);
+    display: block;
+    position: relative;
+    cursor: pointer;
+    padding-left: 50px;
+    padding-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .done {
+    margin: 10px 0;
+    width: 300px;
+    color: var(--bggg-col);
+    /* text-transform: uppercase; */
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 400;
+    background-color: var(--tri-col);
+    border-radius: 3px;
+    border: 1px solid black;
+    display: block;
+    position: relative;
+    cursor: pointer;
+    padding-left: 50px;
+    padding-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  .not-done input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  .done input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .checkmark {
+    position: absolute;
+    top: 7.5px;
+    left: 5px;
+    height: 25px;
+    width: 25px;
+    background-color: var(--bg-col);
+    border-radius: 3px;
+  }
+
+  .checkmark:after {
+    content: '';
+    position: absolute;
+    display: none;
+  }
+
+  .done input ~ .checkmark:after {
+    display: block;
+  }
+
+  .done .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid var(--tri-col);
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+  .not-done:hover input ~ .checkmark {
+    background-color: var(--bg-hover);
+  }
 </style>
 
 <link
@@ -356,33 +463,36 @@
             on:keydown={e => e.key === 'Enter' && add(e.target)} />
           <div class="todo-wrapper">
             <div class="left">
-              <h2>todo</h2>
+              <h2 class="todo-title">todo</h2>
               {#each todos.filter(t => t.status === 'active' && currentList._id === t.list) as todo (todo._id)}
                 <label
+                  class="not-done"
                   in:receive={{ key: todo._id }}
                   out:send={{ key: todo._id }}
                   animate:flip={{ duration: 200 }}>
+                  {todo.name}
                   <input
                     type="checkbox"
                     on:change={() => mark(todo, 'complete')} />
-                  {todo.name}
+                  <span class="checkmark" />
                   <button on:click={() => removeItem(todo)}>remove</button>
                 </label>
               {/each}
             </div>
             <div class="right">
-              <h2>done</h2>
+              <h2 class="todo-title">done</h2>
               {#each todos.filter(t => t.status == 'complete' && currentList._id == t.list) as todo (todo._id)}
                 <label
                   class="done"
                   in:receive={{ key: todo._id }}
                   out:send={{ key: todo._id }}
                   animate:flip={{ duration: 200 }}>
+                  {todo.name}
                   <input
                     type="checkbox"
                     checked={true}
                     on:change={() => mark(todo, 'active')} />
-                  {todo.name}
+                  <span class="checkmark" />
                   <button on:click={() => removeItem(todo)}>remove</button>
                 </label>
               {/each}

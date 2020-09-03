@@ -1,144 +1,116 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
-  const dispatch = createEventDispatcher();
-  export let month;
-  export let year;
-  export let start;
-  export let end;
-  export let canIncrementMonth;
-  export let canDecrementMonth;
-  export let monthsOfYear;
-  let monthSelectorOpen = false;
-  let availableMonths;
+  import { createEventDispatcher } from 'svelte'
+  const dispatch = createEventDispatcher()
+  export let month
+  export let year
+  export let start
+  export let end
+  export let canIncrementMonth
+  export let canDecrementMonth
+  export let monthsOfYear
+  let monthSelectorOpen = false
+  let availableMonths
   $: {
-    let isOnLowerBoundary = start.getFullYear() === year;
-    let isOnUpperBoundary = end.getFullYear() === year;
+    let isOnLowerBoundary = start.getFullYear() === year
+    let isOnUpperBoundary = end.getFullYear() === year
     availableMonths = monthsOfYear.map((m, i) => {
-      return Object.assign({}, {
-        name: m[0],
-        abbrev: m[1]
-      }, {
-        selectable:
-          (!isOnLowerBoundary && !isOnUpperBoundary)
-          || (
-            (!isOnLowerBoundary || i >= start.getMonth())
-            && (!isOnUpperBoundary || i <= end.getMonth())
-          )
-      });
-    });
+      return Object.assign(
+        {},
+        {
+          name: m[0],
+          abbrev: m[1]
+        },
+        {
+          selectable:
+            (!isOnLowerBoundary && !isOnUpperBoundary) ||
+            ((!isOnLowerBoundary || i >= start.getMonth()) &&
+              (!isOnUpperBoundary || i <= end.getMonth()))
+        }
+      )
+    })
   }
   function toggleMonthSelectorOpen() {
-    monthSelectorOpen = !monthSelectorOpen;
+    monthSelectorOpen = !monthSelectorOpen
   }
   function monthSelected(event, { m, i }) {
-    event.stopPropagation();
-    if (!m.selectable) return;
-    dispatch('monthSelected', i);
-    toggleMonthSelectorOpen();
+    event.stopPropagation()
+    if (!m.selectable) return
+    dispatch('monthSelected', i)
+    toggleMonthSelectorOpen()
   }
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet"> 
-<div class="title">
-  <div class="heading-section">
-    <div class="control" 
-      class:enabled={canDecrementMonth}
-      on:click={() => dispatch('incrementMonth', -1)}>
-      <i class="arrow left"></i>
-    </div>
-    <div class="label" on:click={toggleMonthSelectorOpen}>
-      {monthsOfYear[month][0]} {year}
-    </div> 
-    <div class="control"
-      class:enabled={canIncrementMonth}
-      on:click={() => dispatch('incrementMonth', 1)}>
-      <i class="arrow right"></i>
-    </div>
-  </div>
-  <div class="month-selector" class:open={monthSelectorOpen}>
-    {#each availableMonths as monthDefinition, index}
-      <div 
-        class="month-selector--month" 
-        class:selected={index === month}
-        class:selectable={monthDefinition.selectable}
-        on:click={e => monthSelected(e, { m: monthDefinition, i: index })}
-      >
-        <span>{monthDefinition.abbrev}</span>
-      </div>
-    {/each}
-  </div>
-</div>
 
 <style>
-
-  .heading-section { 
+  .heading-section {
     font-size: 25px;
     padding: 24px 15px;
     display: flex;
     justify-content: space-between;
-    color: #3d4548;
+    color: #fff;
     font-weight: 100;
     font-family: 'Manrope';
   }
-  .label { 
+  .label {
     cursor: pointer;
+    color: #fff;
   }
-  .month-selector { 
+  .month-selector {
     position: absolute;
-    top: 75px; 
-    left: 0; 
-    right: 0; 
-    bottom: 0; 
-    background-color: #fff;
-    transition: all 300ms; 
-    transform: scale(1.2); 
-    opacity: 0; 
+    top: 75px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--bgg-col);
+    transition: all 300ms;
+    transform: scale(1.2);
+    opacity: 0;
     visibility: hidden;
     z-index: 1;
     text-align: center;
     font-family: 'Manrope';
   }
-  .month-selector.open { 
-    transform: scale(1); 
+  .month-selector.open {
+    transform: scale(1);
     visibility: visible;
     opacity: 1;
   }
-  .month-selector--month { 
-    width: 31.333%; 
-    margin: .5%; 
+  .month-selector--month {
+    width: 31.333%;
+    margin: 0.5%;
     height: 23%;
     display: inline-block;
-    color: #4a4a4a;
+    color: #fff;
     border: 1px solid #efefef;
     opacity: 0.2;
   }
-  .month-selector--month.selectable { 
-    opacity: 1; 
+  .month-selector--month.selectable {
+    opacity: 1;
   }
-  .month-selector--month.selectable:hover { 
+  .month-selector--month.selectable:hover {
     cursor: pointer;
-    box-shadow: 0px 0px 3px rgba(0,0,0,0.15);
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.15);
   }
-  .month-selector--month.selected { 
+  .month-selector--month.selected {
     background: var(--highlight-color);
-    color: #fff;
+    color: var(--bgg-col);
   }
-  .month-selector--month:before { 
+  .month-selector--month:before {
     content: ' ';
     display: inline-block;
     height: 100%;
     vertical-align: middle;
   }
-  .month-selector--month span { 
-    vertical-align: middle; 
+  .month-selector--month span {
+    vertical-align: middle;
     display: inline-block;
   }
-  .control { 
+  .control {
     padding: 0 8px;
     opacity: 0.2;
     transform: translateY(3px);
   }
-  .control.enabled { 
-    opacity: 1; 
+  .control.enabled {
+    opacity: 1;
     cursor: pointer;
   }
   .arrow {
@@ -160,3 +132,37 @@
     -webkit-transform: rotate(135deg);
   }
 </style>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&display=swap"
+  rel="stylesheet" />
+<div class="title">
+  <div class="heading-section">
+    <div
+      class="control"
+      class:enabled={canDecrementMonth}
+      on:click={() => dispatch('incrementMonth', -1)}>
+      <i class="arrow left" />
+    </div>
+    <div class="label" on:click={toggleMonthSelectorOpen}>
+      {monthsOfYear[month][0]} {year}
+    </div>
+    <div
+      class="control"
+      class:enabled={canIncrementMonth}
+      on:click={() => dispatch('incrementMonth', 1)}>
+      <i class="arrow right" />
+    </div>
+  </div>
+  <div class="month-selector" class:open={monthSelectorOpen}>
+    {#each availableMonths as monthDefinition, index}
+      <div
+        class="month-selector--month"
+        class:selected={index === month}
+        class:selectable={monthDefinition.selectable}
+        on:click={e => monthSelected(e, { m: monthDefinition, i: index })}>
+        <span>{monthDefinition.abbrev}</span>
+      </div>
+    {/each}
+  </div>
+</div>
