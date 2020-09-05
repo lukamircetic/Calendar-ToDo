@@ -20,7 +20,8 @@
   const timeStatement = () => {
     let d = new Date()
     let h = d.getHours()
-    if (0 < h && h < 12) {
+    console.log('h', h)
+    if (0 <= h && h < 12) {
       console.log(h)
       currentStatement = `Good morning, ${$user_name}`
     } else if (12 <= h && h < 18) {
@@ -29,7 +30,7 @@
       currentStatement = `Good evening, ${$user_name}`
     }
   }
-
+  $: console.log(currentStatement)
   timeStatement()
   //todos: store the incoming items, sort by list, and display -- done
   // remove items, mark as complete, etc --- done
@@ -259,14 +260,17 @@
     grid-template-columns: 1fr 1fr;
     grid-gap: 1em;
     max-width: 45em;
+    min-height: 400px;
     max-height: 100%;
     overflow-y: auto;
     overflow-x: hidden;
+    align-content: flex-start;
   }
 
   .board > input {
     font-family: 'Roboto', sans-serif;
     max-width: 600px;
+    max-height: 35px;
     font-size: 1.1em;
     grid-column: 1/3;
     border-radius: 5px;
