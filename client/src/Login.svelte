@@ -37,7 +37,7 @@
     }
     current_user_id.set(response.id)
     user_token.set(response.token)
-    user_name.set(email.split("@")[0]);
+    user_name.set(email.split('@')[0])
     // console.log($current_user_id, $user_token)
     dispatch('login-user', { success: response.success })
   }
@@ -146,16 +146,6 @@
     justify-content: center;
     width: 100%;
     height: 70%;
-  }
-  .title-box {
-    width: 480px;
-    padding: 32px;
-    background-color: var(--bgg-col);
-    border-radius: 5px;
-    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
-    -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
-    box-sizing: border-box;
-    /* text-transform: uppercase */
   }
 
   .center-box {
@@ -327,25 +317,131 @@
   .secondary-button-demo:hover {
     text-decoration: underline;
   } */
-  .main-title {
-    font-family: 'Montserrat', sans-serif;
-    color: var(--tri-col);
-    font-size: 115px;
-    font-weight: 1000;
-    margin-bottom: 75px;
+
+  @media (min-width: 1000px) {
+    .main-title {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--tri-col);
+      font-size: 115px;
+      font-weight: 1000;
+      margin-bottom: 75px;
+    }
+    .list-box {
+      display: flex;
+      flex-direction: column;
+    }
+    .bottom-wrapper {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .title-box {
+    width: 480px;
+    padding: 32px;
+    background-color: var(--bgg-col);
+    border-radius: 5px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    /* text-transform: uppercase */
   }
-  .bottom-wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
   }
 
-  .list-box {
-    display: flex;
-    flex-direction: column;
+  @media (max-width: 1000px) {
+    .main-title {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--tri-col);
+      font-size: 85px;
+      font-weight: 1000;
+      margin-bottom: 75px;
+    }
+
+    .list-box {
+      display: none;
+    }
+
+    .bottom-wrapper {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+    .title-box {
+    width: 480px;
+    padding: 32px;
+    background-color: var(--bgg-col);
+    border-radius: 5px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    /* text-transform: uppercase */
+  }
   }
 
+  @media (max-width: 700px) {
+    .main-title {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--tri-col);
+      font-size: 85px;
+      font-weight: 1000;
+      margin-bottom: 75px;
+      text-align: center;
+    }
+
+    .list-box {
+      display: none;
+    }
+
+    .bottom-wrapper {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+    .title-box {
+    width: 480px;
+    padding: 32px;
+    background-color: var(--bgg-col);
+    border-radius: 5px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    /* text-transform: uppercase */
+  }
+  }
+
+  @media (max-width: 500px) {
+    .main-title {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--tri-col);
+      font-size: 85px;
+      font-weight: 1000;
+      margin-bottom: 75px;
+      text-align: center;
+    }
+
+    .list-box {
+      display: none;
+    }
+
+    .bottom-wrapper {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+    .title-box {
+    width: auto;
+    padding: 32px;
+    background-color: var(--bgg-col);
+    border-radius: 5px;
+    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.2);
+    -webkit-box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+    /* text-transform: uppercase */
+  }
+  }
   .list-item {
     margin: 10px 0;
     width: 300px;
@@ -438,7 +534,7 @@
   .list-item:hover input ~ .checkmark {
     background-color: var(--bg-hover);
   }
-  
+
   .box {
     width: 100%;
     display: flex;
