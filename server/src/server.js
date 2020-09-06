@@ -28,7 +28,7 @@ app.use('/api/list', listRouter)
 export const start = async () => {
   try {
     await connect()
-    app.listen(config.port, () => {
+    app.listen(process.env.PORT, () => {
       console.log(`REST API on http://localhost:${config.port}/`)
     })
   } catch (e) {

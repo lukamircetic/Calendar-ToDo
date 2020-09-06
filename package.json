@@ -6,7 +6,9 @@
   "author": "Luka Mircetic",
   "license": "ISC",
   "scripts": {
-    "build": "babel src --out-dir dist",
+    "build": "babel server/src --out-dir server/dist",
+    "build-client": "cd client && npm run build",
+    "heroku-postbuild": "npm run build-client && npm run build",
     "test": "cross-env NODE_ENV=testing jest --forceExit --detectOpenHandles  --silent",
     "test-routes": "yarn test -t router",
     "test-models": "yarn test -t model",
@@ -14,7 +16,7 @@
     "test-auth": "yarn test -t Authentication:",
     "dev": "nodemon --exec yarn restart",
     "restart": "rimraf dist && yarn build && yarn start",
-    "start": "node dist/index.js"
+    "start": "node server/dist/index.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
