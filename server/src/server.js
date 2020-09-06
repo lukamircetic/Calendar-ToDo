@@ -29,7 +29,7 @@ export const start = async () => {
   try {
     await connect()
     app.listen(process.env.PORT, () => {
-      console.log(`REST API on http://localhost:${config.port}/`)
+      console.log(`REST API on http://localhost:${process.env.PORT}/`)
     })
   } catch (e) {
     console.error(e)
