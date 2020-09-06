@@ -6,8 +6,8 @@
 
 An app that allows you to set a to do list for specific days and toggle between them
 
-Please note that the login functionality is currently down, please use the app as a guest while I work to bring it back online. The to-do's you make will not save, the guest mode is just for proof of concept, Thanks.
-Demo deployed at: http://calendartodo.surge.sh/
+Here is the temporary URL while i purchase a domain:
+https://calendar-todo-luka.herokuapp.com/
 
 
 
@@ -17,7 +17,7 @@ Demo deployed at: http://calendartodo.surge.sh/
 - [x] need to add styles to the login page and also a description
 - [x] add styles to homepage
 - [x] when switching between create account and login need to blank the fields
-- [ ] need to host app on heroku so that you are able to access db from anywhere
+- [x] need to host app on heroku so that you are able to access db from anywhere
 
 Version 2 potential features:
 - [ ] maybe add different coloured modes
