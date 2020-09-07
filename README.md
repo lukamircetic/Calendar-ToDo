@@ -23,3 +23,4 @@ Version 2 potential features:
 - [ ] maybe add different coloured modes
 - [ ] create a general list
 - [ ] find some api's to sync with... google login, etc would be cool
+- [ ] add a settings menu
