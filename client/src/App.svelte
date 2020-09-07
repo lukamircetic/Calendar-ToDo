@@ -1,12 +1,12 @@
 <script>
-  import { onMount } from 'svelte';
-  import Home from "./Home.svelte";
-  import Login from "./Login.svelte";
-  import Error from "./Error.svelte";
+  import { onMount } from 'svelte'
+  import Home from './Home.svelte'
+  import Login from './Login.svelte'
+  import Error from './Error.svelte'
 
-  let loggedIn = false;
-  let errorMessage;
-  let errorShow;
+  let loggedIn = false
+  let errorMessage
+  let errorShow
 
   // onMount(async() => {
   //   const res = await fetch(
@@ -26,23 +26,25 @@
   //   const response = await res.json();
   // }
   function displayError(event) {
-    errorMessage = event.detail;
-    errorShow = true;
+    errorMessage = event.detail
+    errorShow = true
   }
 </script>
 
+<head>
+  <title>📅 Calendar To-Do</title>
+</head>
 {#if loggedIn == false}
-<Login
-  on:login-user={event => loggedIn = event.detail.success}
-  on:display-error={displayError} 
-  on:login-guest={event => loggedIn = event.detail.success}
-/>
+  <Login
+    on:login-user={event => (loggedIn = event.detail.success)}
+    on:display-error={displayError}
+    on:login-guest={event => (loggedIn = event.detail.success)} />
 {:else}
-<Home/>
+  <Home />
 {/if}
- <div></div>
+<div />
 
-
-
-<Error show={errorShow} message={errorMessage}
-  on:close-error={() => errorShow = false} />
+<Error
+  show={errorShow}
+  message={errorMessage}
+  on:close-error={() => (errorShow = false)} />
