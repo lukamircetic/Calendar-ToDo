@@ -31,9 +31,9 @@
   }
 </script>
 
-<head>
+<svelte:head>
   <title>📅 Calendar To-Do</title>
-</head>
+</svelte:head>
 {#if loggedIn == false}
   <Login
     on:login-user={event => (loggedIn = event.detail.success)}
