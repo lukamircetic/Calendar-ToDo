@@ -360,7 +360,7 @@
     /* text-transform: uppercase; */
     font-family: 'Roboto', sans-serif;
     font-size: 16px;
-    overflow: auto;
+    overflow: hidden;
     line-height: 20px;
     font-weight: 400;
     background-color: var(--bgg-col);

@@ -58,6 +58,7 @@
     current_user_id.set(response.id)
     console.log('res token', response.token)
     user_token.set(response.token)
+    user_name.set(email.split('@')[0])
     dispatch('login-user', { success: response.success })
   }
 
