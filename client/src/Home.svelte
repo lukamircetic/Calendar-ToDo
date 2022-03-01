@@ -15,14 +15,11 @@
   let currentList
   let currentStatement = ''
 
-  // For the personal time statement at the top - in the future could change so when the user signs up that they input a name
-  // but atm this is fine imo
+  // TODO For the personal time statement at the top - in the future could change so when the user signs up that they input a name
   const timeStatement = () => {
     let d = new Date()
     let h = d.getHours()
-    console.log('h', h)
     if (0 <= h && h < 12) {
-      console.log(h)
       currentStatement = `Good morning, ${$user_name}`
     } else if (12 <= h && h < 18) {
       currentStatement = `Good afternoon, ${$user_name}`
@@ -30,24 +27,20 @@
       currentStatement = `Good evening, ${$user_name}`
     }
   }
-  $: console.log(currentStatement)
+
   timeStatement()
-  //todos: store the incoming items, sort by list, and display -- done
-  // remove items, mark as complete, etc --- done
 
   //TODO - need to figure out how to not post an empty list
   //on mount I get all the user's lists from the db and assign them to lists param
   onMount(async () => {
     const response = await fetchGet('api/list')
-    console.log('list response', response)
     lists = { ...response.data }
     mounted = true
     const items = await fetchGet('api/item')
     todos = items.data
-    console.log('alltodos;', todos)
   })
 
-  //Todo list styles... basically taken from the svelte tutorial
+  // list styles... basically taken from the svelte tutorial
   const [send, receive] = crossfade({
     duration: d => Math.sqrt(d * 200),
     fallback(node, params) {
@@ -94,6 +87,7 @@
     let list = response.data
     lists = { ...lists, list }
   }
+
   // Add an item to db
   async function addItem(item) {
     const response = await fetchPost('/api/item', {
@@ -107,9 +101,9 @@
     }
     let addedItem = response.data
     todos = [...todos, addedItem]
-    console.log('allTodos with new item', todos)
   }
 
+  // remove a todo from db
   async function removeItem(todo) {
     const response = await fetchDelete(`/api/item/${todo._id}`)
     if (!response) {
@@ -118,6 +112,7 @@
     todos = todos.filter(t => t !== todo)
   }
 
+  // update a todo in the db
   async function updateItem(todo) {
     const response = await fetchUpdate(`/api/item/${todo._id}`, {
       status: todo.status
@@ -126,7 +121,8 @@
       console.log('Could not update item')
     }
   }
-  // add an item to a list (date)
+
+  // add an item to a todo list (helper for post)
   function add(input) {
     const todo = {
       name: input.value,
@@ -138,10 +134,12 @@
     input.value = ''
   }
 
+  // remove an item from a todo list (helper for marking)
   function remove(todo) {
     todos = todos.filter(t => t !== todo)
   }
 
+  // mark todo as done
   function mark(todo, done) {
     todo.status = done
     updateItem(todo)
@@ -278,9 +276,15 @@
     color: white;
     border: 1px solid var(--tri-col);
   }
+
   .board > input::placeholder {
     color: var(--low-col);
   }
+
+  .board > input:focus-visible {
+    border-color: var(--low-col);
+  }
+
   .left {
     width: 50%;
   }

@@ -8,6 +8,7 @@
   export let loggedIn
   loggedIn = true
 
+  // sample todos variable and css classname declaration
   // hacky way to handle these guys state but its just sample todos
   let todo1 = true
   let todoclassone = 'list-item-checked'
@@ -16,11 +17,15 @@
   let todo3 = false
   let todoclassthree = 'list-item'
 
+
   let login = true
   let email = ''
   let password = ''
   let confirmPass = ''
   let title = 'Sign in'
+
+  // Will be implemented in the future for users who want to test out the app without
+  // creating an account
   function handleGuest() {
     dispatch('login-guest', { success: true })
   }
@@ -30,7 +35,7 @@
       email: email,
       password: password
     })
-    console.log('response', response)
+    // console.log('response', response)
     if (!response.success) {
       dispatch('display-error', response.message)
       return false
@@ -56,7 +61,7 @@
       return false
     }
     current_user_id.set(response.id)
-    console.log('res token', response.token)
+    // console.log('res token', response.token)
     user_token.set(response.token)
     user_name.set(email.split('@')[0])
     dispatch('login-user', { success: response.success })
@@ -75,6 +80,7 @@
     }
   }
 
+  // Was planning to use this for guest login
   function handleSuccess() {
     if (loggedIn == false) {
       loggedIn = true
